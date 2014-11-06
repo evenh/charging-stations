@@ -32,18 +32,17 @@ public class MainActivity extends FragmentActivity {
 		actionBar = getActionBar();
 
 		//Enable Tabs on Action Bar
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		if (actionBar != null) actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
 		ActionBar.TabListener tabListener = new ActionBar.TabListener(){
 			@Override
-			public void onTabReselected(android.app.ActionBar.Tab tab, FragmentTransaction ft) {
-			}
+			public void onTabReselected(android.app.ActionBar.Tab tab, FragmentTransaction ft) {}
 			@Override
 			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 				Tab.setCurrentItem(tab.getPosition());
 			}
 			@Override
-			public void onTabUnselected(android.app.ActionBar.Tab tab, FragmentTransaction ft) {
-			}
+			public void onTabUnselected(android.app.ActionBar.Tab tab, FragmentTransaction ft) {}
 		};
 
 		//Add New Tab

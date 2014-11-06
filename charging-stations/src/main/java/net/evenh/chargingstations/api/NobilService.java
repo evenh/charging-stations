@@ -16,10 +16,9 @@ import retrofit.http.*;
  */
 public interface NobilService {
     Converter DATA_CONVERTER = new GsonConverter(new Gson());
-    String SERVICE_ENDPOINT = "http://nobil.no/api/server";
+    String SERVICE_ENDPOINT = ApiSettings.API_BASE_URL;
 
-    @FormUrlEncoded
-    @POST("/search.php?apikey=" + ApiSettings.API_KEY + "&apiversion=3&action=search&type=id")
-    Charger getChargerById(@Field("id") String chargerId);
+	@GET("/chargers/id/{id}")
+	void getCharger(@Path("id") String chargerId, Callback<Charger> cb);
 
 }
