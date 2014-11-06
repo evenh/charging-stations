@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.evenh.chargingstations.ApiSettings;
@@ -27,16 +28,19 @@ import java.lang.reflect.Type;
  */
 public class MapFragment extends Fragment {
 	public static final String TAG = "MapFragment";
+	private Charger hafrsfjord;
+	private View view;
+	private TextView placeholder;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_map, container, false);
+		view = inflater.inflate(R.layout.fragment_map, container, false);
+		placeholder = (TextView) view.findViewById(R.id.placeholderText);
 		return view;
 	}
 
 	public MapFragment() {
 		super();
-
 
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(Charger.class, new ChargerDeserializer())
@@ -55,11 +59,13 @@ public class MapFragment extends Fragment {
 
 		NobilService nobil = adapter.create(NobilService.class);
 
+
 		nobil.getCharger("NOR_00171", new Callback<Charger>(){
 			@Override
 			public void success(Charger charger, Response response) {
+				hafrsfjord = charger;
 				Log.d(TAG, "Success");
-				Log.d(TAG, charger.toString());
+				placeholder.setText(hafrsfjord.getName());
 			}
 
 			@Override
@@ -67,5 +73,7 @@ public class MapFragment extends Fragment {
 				Log.d(TAG, "Failure: " + retrofitError.toString());
 			}
 		});
+
+
 	}
 }

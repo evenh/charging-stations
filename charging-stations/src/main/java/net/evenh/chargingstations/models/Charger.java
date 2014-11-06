@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Charger {
@@ -92,6 +93,8 @@ public class Charger {
 	private String Zipcode;
 
 	private ArrayList<Attribute> station;
+
+	private HashMap<String, ArrayList<Attribute>> connectors;
 
 	/**
 	 * @return The AvailableChargingPoints
@@ -423,6 +426,14 @@ public class Charger {
 		this.station = station;
 	}
 
+	public HashMap<String, ArrayList<Attribute>> getConnectors() {
+		return connectors;
+	}
+
+	public void setConnectors(HashMap<String, ArrayList<Attribute>> connectors) {
+		this.connectors = connectors;
+	}
+
 	@Override
 	public String toString() {
 		return "Charger{" +
@@ -450,6 +461,7 @@ public class Charger {
 				", UserComment='" + UserComment + '\'' +
 				", Zipcode='" + Zipcode + '\'' +
 				", station=" + station +
+				", connectors=" + connectors +
 				'}';
 	}
 }
