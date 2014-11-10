@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Deserializer for the "csmd" section of the JSON
+ * Deserializer for a single charger
  *
  * @author Even Holthe
  * @since 1.0.0

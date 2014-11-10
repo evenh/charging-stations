@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import net.evenh.chargingstations.ApiSettings;
 import net.evenh.chargingstations.R;
 import net.evenh.chargingstations.api.NobilService;
 import net.evenh.chargingstations.models.Charger;
 import net.evenh.chargingstations.serializers.ChargerDeserializer;
+import net.evenh.chargingstations.serializers.ChargerListDeserializer;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -22,6 +24,7 @@ import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * Created by evenh on 06/11/14.
@@ -44,6 +47,7 @@ public class MapFragment extends Fragment {
 
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(Charger.class, new ChargerDeserializer())
+				.registerTypeAdapter(new TypeToken<ArrayList<Charger>>() {}.getType(), new ChargerListDeserializer())
 				.create();
 
 		RestAdapter adapter = new RestAdapter.Builder()
@@ -60,7 +64,7 @@ public class MapFragment extends Fragment {
 		NobilService nobil = adapter.create(NobilService.class);
 
 
-		nobil.getCharger("NOR_00171", new Callback<Charger>(){
+		/*nobil.getCharger("NOR_00171", new Callback<Charger>(){
 			@Override
 			public void success(Charger charger, Response response) {
 				hafrsfjord = charger;
@@ -72,8 +76,18 @@ public class MapFragment extends Fragment {
 			public void failure(RetrofitError retrofitError) {
 				Log.d(TAG, "Failure: " + retrofitError.toString());
 			}
+		});*/
+
+		nobil.getChargerByMapReferences("(59.943921193288915,10.826683044433594)", "(59.883683240905256,10.650901794433594)", new Callback<ArrayList<Charger>>() {
+			@Override
+			public void success(ArrayList<Charger> chargers, Response response) {
+				placeholder.setText("Ladere hentet: " + chargers.size());
+			}
+
+			@Override
+			public void failure(RetrofitError retrofitError) {
+				Log.d(TAG, "Feilolini");
+			}
 		});
-
-
 	}
 }
