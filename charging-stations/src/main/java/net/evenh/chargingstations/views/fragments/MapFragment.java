@@ -15,9 +15,10 @@ import net.evenh.chargingstations.R;
 import net.evenh.chargingstations.api.NobilService;
 import net.evenh.chargingstations.models.charger.Charger;
 import net.evenh.chargingstations.models.stats.CountyStats;
+import net.evenh.chargingstations.models.stats.MunicipalityStats;
 import net.evenh.chargingstations.serializers.ChargerDeserializer;
 import net.evenh.chargingstations.serializers.ChargerListDeserializer;
-import net.evenh.chargingstations.serializers.CountryStatsDeserializer;
+import net.evenh.chargingstations.serializers.CountyStatsDeserializer;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -26,6 +27,7 @@ import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by evenh on 06/11/14.
@@ -50,7 +52,7 @@ public class MapFragment extends Fragment {
 				.registerTypeAdapter(Charger.class, new ChargerDeserializer())
 				.registerTypeAdapter(new TypeToken<ArrayList<Charger>>() {
 				}.getType(), new ChargerListDeserializer())
-				.registerTypeAdapter(CountyStats.class, new CountryStatsDeserializer())
+				.registerTypeAdapter(CountyStats.class, new CountyStatsDeserializer())
 				.create();
 
 		RestAdapter adapter = new RestAdapter.Builder()
@@ -105,10 +107,12 @@ public class MapFragment extends Fragment {
 			}
 		});*/
 
-		nobil.getStatsForCounty("NOR", "06", new Callback<CountyStats>() {
+		nobil.getMunicipalitiesForCounty("NOR", "06", new Callback<ArrayList<MunicipalityStats>>() {
 			@Override
-			public void success(CountyStats countyStats, Response response) {
-				Log.d(TAG, "Got stats: " + countyStats.toString());
+			public void success(ArrayList<MunicipalityStats> municipalityStatses, Response response) {
+				for (MunicipalityStats m : municipalityStatses){
+					Log.d(TAG, m.toString());
+				}
 			}
 
 			@Override
