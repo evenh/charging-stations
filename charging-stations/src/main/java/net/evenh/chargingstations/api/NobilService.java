@@ -26,4 +26,6 @@ public interface NobilService {
 	@GET("/chargers/map/{northeast}/{southwest}")
 	void getChargerByMapReferences(@Path("northeast") String northEast, @Path("southwest") String southWest, Callback<ArrayList<Charger>> cb);
 
+	@GET("/chargers/near/{lat}/{lon}")
+	void getChargersNearLocation(@Path("lat") String latitude, @Path("lon") String longtiude, @Query("distance") Integer distanceInMeters, @Query("limit") Integer limit, Callback<ArrayList<Charger>> cb);
 }
