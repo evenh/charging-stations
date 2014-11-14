@@ -1,6 +1,4 @@
-package net.evenh.chargingstations.models;
-
-import java.util.HashMap;
+package net.evenh.chargingstations.models.charger;
 
 /**
  * Created by evenh on 06/11/14.

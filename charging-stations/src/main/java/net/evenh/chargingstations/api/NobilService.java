@@ -1,11 +1,8 @@
 package net.evenh.chargingstations.api;
 
-import com.google.gson.Gson;
-import net.evenh.chargingstations.ApiSettings;
-import net.evenh.chargingstations.models.Charger;
+import net.evenh.chargingstations.models.charger.Charger;
+import net.evenh.chargingstations.models.stats.CountryStats;
 import retrofit.Callback;
-import retrofit.converter.Converter;
-import retrofit.converter.GsonConverter;
 import retrofit.http.*;
 
 import java.util.ArrayList;
@@ -17,9 +14,7 @@ import java.util.ArrayList;
  * @since 1.0.0
  */
 public interface NobilService {
-    Converter DATA_CONVERTER = new GsonConverter(new Gson());
-    String SERVICE_ENDPOINT = ApiSettings.API_BASE_URL;
-
+	// Chargers
 	@GET("/chargers/id/{id}")
 	void getCharger(@Path("id") String chargerId, Callback<Charger> cb);
 
@@ -28,4 +23,9 @@ public interface NobilService {
 
 	@GET("/chargers/near/{lat}/{lon}")
 	void getChargersNearLocation(@Path("lat") String latitude, @Path("lon") String longtiude, @Query("distance") Integer distanceInMeters, @Query("limit") Integer limit, Callback<ArrayList<Charger>> cb);
+
+	// Stats
+	@GET("/stats/{country}")
+	void getStatsForCountry(@Path("country") String countryCode, Callback<ArrayList<CountryStats>> cb);
+
 }

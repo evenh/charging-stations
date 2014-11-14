@@ -1,4 +1,4 @@
-package net.evenh.chargingstations.models;
+package net.evenh.chargingstations.models.charger;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

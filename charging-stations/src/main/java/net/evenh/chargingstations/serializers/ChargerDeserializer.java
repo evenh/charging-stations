@@ -1,9 +1,8 @@
 package net.evenh.chargingstations.serializers;
 
-import android.util.Log;
 import com.google.gson.*;
-import net.evenh.chargingstations.models.Attribute;
-import net.evenh.chargingstations.models.Charger;
+import net.evenh.chargingstations.models.charger.Attribute;
+import net.evenh.chargingstations.models.charger.Charger;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

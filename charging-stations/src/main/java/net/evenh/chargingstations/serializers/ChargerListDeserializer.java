@@ -2,11 +2,10 @@ package net.evenh.chargingstations.serializers;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import net.evenh.chargingstations.models.Charger;
+import net.evenh.chargingstations.models.charger.Charger;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by evenh on 10/11/14.

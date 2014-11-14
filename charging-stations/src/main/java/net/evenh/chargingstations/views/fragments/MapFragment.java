@@ -13,17 +13,19 @@ import com.google.gson.reflect.TypeToken;
 import net.evenh.chargingstations.ApiSettings;
 import net.evenh.chargingstations.R;
 import net.evenh.chargingstations.api.NobilService;
-import net.evenh.chargingstations.models.Charger;
+import net.evenh.chargingstations.models.charger.Charger;
+import net.evenh.chargingstations.models.stats.CountryStats;
 import net.evenh.chargingstations.serializers.ChargerDeserializer;
 import net.evenh.chargingstations.serializers.ChargerListDeserializer;
+import net.evenh.chargingstations.serializers.CountryStatsDeserializer;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
+import retrofit.mime.TypedByteArray;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -47,7 +49,9 @@ public class MapFragment extends Fragment {
 
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(Charger.class, new ChargerDeserializer())
-				.registerTypeAdapter(new TypeToken<ArrayList<Charger>>() {}.getType(), new ChargerListDeserializer())
+				.registerTypeAdapter(new TypeToken<ArrayList<Charger>>() {
+				}.getType(), new ChargerListDeserializer())
+				.registerTypeAdapter(CountryStats.class, new CountryStatsDeserializer())
 				.create();
 
 		RestAdapter adapter = new RestAdapter.Builder()
@@ -78,7 +82,7 @@ public class MapFragment extends Fragment {
 			}
 		});*/
 
-		nobil.getChargerByMapReferences("(59.943921193288915,10.826683044433594)", "(59.883683240905256,10.650901794433594)", new Callback<ArrayList<Charger>>() {
+		/*nobil.getChargerByMapReferences("(59.943921193288915,10.826683044433594)", "(59.883683240905256,10.650901794433594)", new Callback<ArrayList<Charger>>() {
 			@Override
 			public void success(ArrayList<Charger> chargers, Response response) {
 				placeholder.setText("Ladere hentet: " + chargers.size());
@@ -87,6 +91,32 @@ public class MapFragment extends Fragment {
 			@Override
 			public void failure(RetrofitError retrofitError) {
 				Log.d(TAG, "Feilolini");
+			}
+		});*/
+
+		/*nobil.getChargersNearLocation("59.91673", "10.74782", 1000, 20, new Callback<ArrayList<Charger>>() {
+			@Override
+			public void success(ArrayList<Charger> chargers, Response response) {
+				placeholder.setText("Ladere i nærheten: " + chargers.size());
+			}
+
+			@Override
+			public void failure(RetrofitError retrofitError) {
+				Log.d(TAG, "Failure: " + new String(((TypedByteArray)retrofitError.getResponse().getBody()).getBytes()));
+			}
+		});*/
+
+		nobil.getStatsForCountry("NOR", new Callback<ArrayList<CountryStats>>() {
+			@Override
+			public void success(ArrayList<CountryStats> countryStatses, Response response) {
+				for (CountryStats cs : countryStatses){
+					Log.d(TAG, cs.toString());
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError retrofitError) {
+				Log.d(TAG, "Failure: " + retrofitError.getMessage());
 			}
 		});
 	}
