@@ -2,6 +2,7 @@ package net.evenh.chargingstations.api;
 
 import net.evenh.chargingstations.models.charger.Charger;
 import net.evenh.chargingstations.models.stats.CountyStats;
+import net.evenh.chargingstations.models.stats.DetailedMunicipality;
 import net.evenh.chargingstations.models.stats.MunicipalityStats;
 import retrofit.Callback;
 import retrofit.http.*;
@@ -37,4 +38,7 @@ public interface NobilService {
 
 	@GET("/stats/{country}/municipalities/{municipality}")
 	void getMunicipality(@Path("country") String countryCode, @Path("municipality") String municipalityId, Callback<MunicipalityStats> cb);
+
+	@GET("/stats/{country}/municipalities/{municipality}/detail")
+	void getMunicipalityDetails(@Path("country") String countryCode, @Path("municipality") String municipalityId, Callback<ArrayList<DetailedMunicipality>> cb);
 }

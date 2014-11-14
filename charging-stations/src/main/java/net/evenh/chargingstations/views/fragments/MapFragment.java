@@ -15,6 +15,7 @@ import net.evenh.chargingstations.R;
 import net.evenh.chargingstations.api.NobilService;
 import net.evenh.chargingstations.models.charger.Charger;
 import net.evenh.chargingstations.models.stats.CountyStats;
+import net.evenh.chargingstations.models.stats.DetailedMunicipality;
 import net.evenh.chargingstations.models.stats.MunicipalityStats;
 import net.evenh.chargingstations.serializers.ChargerDeserializer;
 import net.evenh.chargingstations.serializers.ChargerListDeserializer;
@@ -107,10 +108,12 @@ public class MapFragment extends Fragment {
 			}
 		});*/
 
-		nobil.getMunicipality("NOR", "0605", new Callback<MunicipalityStats>() {
+		nobil.getMunicipalityDetails("NOR", "0605", new Callback<ArrayList<DetailedMunicipality>>() {
 			@Override
-			public void success(MunicipalityStats municipalityStats, Response response) {
-				Log.d(TAG, "M: " + municipalityStats.toString());
+			public void success(ArrayList<DetailedMunicipality> detailedMunicipalities, Response response) {
+				for(DetailedMunicipality dm : detailedMunicipalities){
+					Log.d(TAG, dm.toString());
+				}
 			}
 
 			@Override
