@@ -14,7 +14,7 @@ import net.evenh.chargingstations.ApiSettings;
 import net.evenh.chargingstations.R;
 import net.evenh.chargingstations.api.NobilService;
 import net.evenh.chargingstations.models.charger.Charger;
-import net.evenh.chargingstations.models.stats.CountryStats;
+import net.evenh.chargingstations.models.stats.CountyStats;
 import net.evenh.chargingstations.serializers.ChargerDeserializer;
 import net.evenh.chargingstations.serializers.ChargerListDeserializer;
 import net.evenh.chargingstations.serializers.CountryStatsDeserializer;
@@ -24,7 +24,6 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
-import retrofit.mime.TypedByteArray;
 
 import java.util.ArrayList;
 
@@ -51,7 +50,7 @@ public class MapFragment extends Fragment {
 				.registerTypeAdapter(Charger.class, new ChargerDeserializer())
 				.registerTypeAdapter(new TypeToken<ArrayList<Charger>>() {
 				}.getType(), new ChargerListDeserializer())
-				.registerTypeAdapter(CountryStats.class, new CountryStatsDeserializer())
+				.registerTypeAdapter(CountyStats.class, new CountryStatsDeserializer())
 				.create();
 
 		RestAdapter adapter = new RestAdapter.Builder()
@@ -106,17 +105,15 @@ public class MapFragment extends Fragment {
 			}
 		});*/
 
-		nobil.getStatsForCountry("NOR", new Callback<ArrayList<CountryStats>>() {
+		nobil.getStatsForCounty("NOR", "06", new Callback<CountyStats>() {
 			@Override
-			public void success(ArrayList<CountryStats> countryStatses, Response response) {
-				for (CountryStats cs : countryStatses){
-					Log.d(TAG, cs.toString());
-				}
+			public void success(CountyStats countyStats, Response response) {
+				Log.d(TAG, "Got stats: " + countyStats.toString());
 			}
 
 			@Override
 			public void failure(RetrofitError retrofitError) {
-				Log.d(TAG, "Failure: " + retrofitError.getMessage());
+
 			}
 		});
 	}

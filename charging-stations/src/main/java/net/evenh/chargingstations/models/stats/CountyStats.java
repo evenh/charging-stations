@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 /**
  * Created by evenh on 14/11/14.
  */
-public class CountryStats {
+public class CountyStats {
 	@Expose
 	private Integer count;
 	@Expose
@@ -13,7 +13,7 @@ public class CountryStats {
 	@Expose
 	private String county;
 
-	public CountryStats(Integer count, String countyid, String county) {
+	public CountyStats(Integer count, String countyid, String county) {
 		this.count = count;
 		this.countyid = countyid;
 		this.county = county;
@@ -75,7 +75,7 @@ public class CountryStats {
 
 	@Override
 	public String toString() {
-		return "CountryStats{" +
+		return "CountyStats{" +
 				"count=" + count +
 				", countyid='" + countyid + '\'' +
 				", county='" + county + '\'' +
