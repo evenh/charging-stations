@@ -34,4 +34,7 @@ public interface NobilService {
 
 	@GET("/stats/{country}/county/{county}/municipalities")
 	void getMunicipalitiesForCounty(@Path("country") String countryCode, @Path("county") String countyCode, Callback<ArrayList<MunicipalityStats>> cb);
+
+	@GET("/stats/{country}/municipalities/{municipality}")
+	void getMunicipality(@Path("country") String countryCode, @Path("municipality") String municipalityId, Callback<MunicipalityStats> cb);
 }

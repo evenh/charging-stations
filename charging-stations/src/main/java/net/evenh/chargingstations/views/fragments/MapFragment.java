@@ -107,12 +107,10 @@ public class MapFragment extends Fragment {
 			}
 		});*/
 
-		nobil.getMunicipalitiesForCounty("NOR", "06", new Callback<ArrayList<MunicipalityStats>>() {
+		nobil.getMunicipality("NOR", "0605", new Callback<MunicipalityStats>() {
 			@Override
-			public void success(ArrayList<MunicipalityStats> municipalityStatses, Response response) {
-				for (MunicipalityStats m : municipalityStatses){
-					Log.d(TAG, m.toString());
-				}
+			public void success(MunicipalityStats municipalityStats, Response response) {
+				Log.d(TAG, "M: " + municipalityStats.toString());
 			}
 
 			@Override
