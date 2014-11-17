@@ -9,7 +9,6 @@
     tools:context=".MainActivity$PlaceholderFragment">
 
     <TextView
-            android:text="foo"
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -17,7 +16,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Here is a map"
             android:id="@+id/placeholderText" android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
