@@ -9,4 +9,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="gps_install">Please install Google Play Services</string>
+
+    <!-- Near Me Fragment -->
+    <string name="near_me">Near me</string>
 </resources>

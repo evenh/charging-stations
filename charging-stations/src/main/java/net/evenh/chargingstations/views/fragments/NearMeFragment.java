@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
@@ -18,13 +20,21 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
 
 import net.evenh.chargingstations.R;
+import net.evenh.chargingstations.api.NobilClient;
+import net.evenh.chargingstations.api.NobilService;
+import net.evenh.chargingstations.models.charger.Charger;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+import java.util.ArrayList;
+
 /**
  * Created by evenh on 06/11/14.
  */
 public class NearMeFragment extends Fragment implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 	public static final String TAG = "NearMeFragment";
 	private View view;
-	private TextView placeholder;
 
 	LocationClient mLocationClient;
 	Location mCurrentLocation;
@@ -45,7 +55,6 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_nearme, container, false);
-		placeholder = (TextView) view.findViewById(R.id.placeholderText);
 		return view;
 	}
 
@@ -77,8 +86,6 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		Log.d(TAG, "Connected to Google Play Services");
 		mCurrentLocation = mLocationClient.getLastLocation();
 		mLocationClient.requestLocationUpdates(mLocationRequest, this);
-
-		placeholder.setText("lat: " + mCurrentLocation.getLatitude() + " lon: " + mCurrentLocation.getLongitude());
 	}
 
 	@Override
@@ -109,6 +116,30 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	}
 
 	private void showChargersNearLocation() {
+		String latitude = String.valueOf(mCurrentLocation.getLatitude());
+		String longitude = String.valueOf(mCurrentLocation.getLongitude());
 
+		NobilService api = NobilClient.getInstance().getApi();
+
+		api.getChargersNearLocation(latitude, longitude, 2000, 30, new Callback<ArrayList<Charger>>() {
+			@Override
+			public void success(ArrayList<Charger> chargers, Response response) {
+				ArrayList<String> items = new ArrayList<String>();
+
+				for(Charger c : chargers){
+					items.add(c.getName());
+				}
+
+				ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items);
+
+				ListView listView = (ListView) view.findViewById(R.id.listView);
+				listView.setAdapter(itemsAdapter);
+			}
+
+			@Override
+			public void failure(RetrofitError retrofitError) {
+
+			}
+		});
 	}
 }
