@@ -3,7 +3,7 @@ package net.evenh.chargingstations.views.adapters;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
-import net.evenh.chargingstations.views.fragments.MapFragment;
+import net.evenh.chargingstations.views.fragments.NearMeFragment;
 import net.evenh.chargingstations.views.fragments.StatsFragment;
 
 /**
@@ -19,7 +19,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(int i) {
 		switch (i) {
 			case 0:
-				return new MapFragment();
+				return new NearMeFragment();
 			case 1:
 				return new StatsFragment();
 		}
