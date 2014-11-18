@@ -2,14 +2,17 @@ package net.evenh.chargingstations.views.fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.IntentSender;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
@@ -23,22 +26,35 @@ import net.evenh.chargingstations.R;
 import net.evenh.chargingstations.api.NobilClient;
 import net.evenh.chargingstations.api.NobilService;
 import net.evenh.chargingstations.models.charger.Charger;
+import net.evenh.chargingstations.views.adapters.ChargerListAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by evenh on 06/11/14.
  */
-public class NearMeFragment extends Fragment implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
+public class NearMeFragment extends Fragment implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, SwipeRefreshLayout.OnRefreshListener {
 	public static final String TAG = "NearMeFragment";
 	private View view;
+	private View header;
+	private SwipeRefreshLayout swipeLayout;
+	private ListView listView;
 
-	LocationClient mLocationClient;
-	Location mCurrentLocation;
-	LocationRequest mLocationRequest;
+	private LocationClient mLocationClient;
+	public static Location mCurrentLocation;
+	private LocationRequest mLocationRequest;
+
+	private Geocoder geocoder;
+	private String address;
+
+    private ProgressDialog indicator;
 
 	// Milliseconds per second
 	private static final int MILLISECONDS_PER_SECOND = 1000;
@@ -55,6 +71,11 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_nearme, container, false);
+		// Inflate listview
+		listView = (ListView) view.findViewById(R.id.listView);
+		// Inflate header
+		header = inflater.inflate(R.layout.item_charger_header, listView, false);
+
 		return view;
 	}
 
@@ -67,12 +88,27 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 		mLocationRequest.setInterval(UPDATE_INTERVAL);
 		mLocationRequest.setFastestInterval(FASTEST_INTERVAL_IN_SECONDS);
+
+        indicator = new ProgressDialog(getActivity());
+        indicator.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        indicator.setIndeterminate(true);
+        indicator.setMessage(getResources().getString(R.string.indicator_message));
+        indicator.show();
+	}
+
+	@Override public void onRefresh() {
+		indicator.show();
+		onConnected(null);
+		swipeLayout.setRefreshing(false);
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
 		mLocationClient.connect();
+
+		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		swipeLayout.setOnRefreshListener(this);
 	}
 
 	@Override
@@ -112,6 +148,14 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		mCurrentLocation = location;
 		mLocationClient.removeLocationUpdates(this);
 
+		geocoder = new Geocoder(getActivity(), Locale.getDefault());
+		try {
+			List<Address> addresses = geocoder.getFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), 1);
+			address = addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1);
+		} catch (IOException e) {
+			address = getResources().getString(R.string.no_address_found);
+		}
+
 		showChargersNearLocation();
 	}
 
@@ -119,21 +163,31 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		String latitude = String.valueOf(mCurrentLocation.getLatitude());
 		String longitude = String.valueOf(mCurrentLocation.getLongitude());
 
+		final TextView locationText = (TextView) header.findViewById(R.id.tv_location);
+		final TextView updatedText = (TextView) header.findViewById(R.id.tv_updated);
+
+		final DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext());
+		final DateFormat timeFormat = DateFormat.getTimeInstance();
+
 		NobilService api = NobilClient.getInstance().getApi();
 
-		api.getChargersNearLocation(latitude, longitude, 2000, 30, new Callback<ArrayList<Charger>>() {
+		api.getChargersNearLocation(latitude, longitude, 5000, 15, new Callback<ArrayList<Charger>>() {
 			@Override
 			public void success(ArrayList<Charger> chargers, Response response) {
-				ArrayList<String> items = new ArrayList<String>();
+                ChargerListAdapter adapter = new ChargerListAdapter(getActivity(), chargers);
+                listView.setAdapter(adapter);
 
-				for(Charger c : chargers){
-					items.add(c.getName());
-				}
+				long time = System.currentTimeMillis();
 
-				ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items);
+				locationText.setText(address);
 
-				ListView listView = (ListView) view.findViewById(R.id.listView);
-				listView.setAdapter(itemsAdapter);
+				updatedText.setText(String.format(
+						getResources().getString(R.string.last_updated),
+						dateFormat.format(time) + " " + timeFormat.format(time)
+				));
+
+				listView.addHeaderView(header);
+                indicator.dismiss();
 			}
 
 			@Override

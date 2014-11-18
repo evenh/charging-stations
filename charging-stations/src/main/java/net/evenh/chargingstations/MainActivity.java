@@ -17,14 +17,11 @@ public class MainActivity extends FragmentActivity {
 	private ViewPager Tab;
 	private TabPagerAdapter TabAdapter;
 	private ActionBar actionBar;
-	public static Context c;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		c = this;
 
 		// Check for Google Play Services
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());

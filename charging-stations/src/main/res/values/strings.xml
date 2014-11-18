@@ -12,4 +12,7 @@
 
     <!-- Near Me Fragment -->
     <string name="near_me">Near me</string>
+    <string name="indicator_message">Finding chargers near you...</string>
+    <string name="last_updated">Last updated at %s</string>
+    <string name="no_address_found">No address found</string>
 </resources>
