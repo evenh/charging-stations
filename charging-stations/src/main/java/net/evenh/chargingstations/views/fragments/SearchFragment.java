@@ -3,7 +3,6 @@ package net.evenh.chargingstations.views.fragments;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,10 @@ import retrofit.client.Response;
 import java.util.ArrayList;
 
 /**
- * Created by evenh on 06/11/14.
+ * Fragment handling and displaying search (results)
+ *
+ * @author Even Holthe
+ * @since 1.0.0
  */
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
 	private static final String TAG = "SearchFragment";
@@ -57,7 +59,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 	public void onResume() {
 		super.onResume();
 		searchView.setOnQueryTextListener(this);
-		// TODO: On clear input -> clear list
 	}
 
 
@@ -106,6 +107,16 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
+		if(newText.equals("")){
+			listView.setVisibility(View.GONE);
+			hintText.setVisibility(View.VISIBLE);
+			hintText.setText(R.string.search_for_something);
+
+			ChargerListAdapter adapter = (ChargerListAdapter) listView.getAdapter();
+			adapter.clear();
+			adapter.notifyDataSetChanged();
+			return true;
+		}
 		return false;
 	}
 }
