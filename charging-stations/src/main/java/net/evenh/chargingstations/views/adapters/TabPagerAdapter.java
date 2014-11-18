@@ -4,7 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import net.evenh.chargingstations.views.fragments.NearMeFragment;
-import net.evenh.chargingstations.views.fragments.StatsFragment;
+import net.evenh.chargingstations.views.fragments.SearchFragment;
 
 /**
  * Created by evenh on 06/11/14.
@@ -21,7 +21,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
 			case 0:
 				return new NearMeFragment();
 			case 1:
-				return new StatsFragment();
+				return new SearchFragment();
 		}
 		return null;
 	}

@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity {
 
 			//Add New Tab
 			actionBar.addTab(actionBar.newTab().setText(R.string.near_me).setTabListener(tabListener));
-			actionBar.addTab(actionBar.newTab().setText("Stats").setTabListener(tabListener));
+			actionBar.addTab(actionBar.newTab().setText(R.string.search).setTabListener(tabListener));
 		} else {
 			// Google Play Services error handling
 			Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this, -1);

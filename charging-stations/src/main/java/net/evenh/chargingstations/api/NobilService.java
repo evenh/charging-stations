@@ -20,6 +20,9 @@ public interface NobilService {
 	@GET("/chargers/id/{id}")
 	void getCharger(@Path("id") String chargerId, Callback<Charger> cb);
 
+	@GET("/chargers/address/{address}")
+	void getChargersForAddress(@Path("address") String address, Callback<ArrayList<Charger>> cb);
+
 	@GET("/chargers/map/{northeast}/{southwest}")
 	void getChargerByMapReferences(@Path("northeast") String northEast, @Path("southwest") String southWest, Callback<ArrayList<Charger>> cb);
 

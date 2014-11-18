@@ -192,7 +192,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 
 			@Override
 			public void failure(RetrofitError retrofitError) {
-
+				// TODO: Implement failhandler
 			}
 		});
 	}
