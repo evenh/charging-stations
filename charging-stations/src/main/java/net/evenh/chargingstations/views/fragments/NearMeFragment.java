@@ -170,12 +170,15 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		final DateFormat timeFormat = DateFormat.getTimeInstance();
 
 		NobilService api = NobilClient.getInstance().getApi();
-
 		api.getChargersNearLocation(latitude, longitude, 5000, 15, new Callback<ArrayList<Charger>>() {
 			@Override
 			public void success(ArrayList<Charger> chargers, Response response) {
                 ChargerListAdapter adapter = new ChargerListAdapter(getActivity(), chargers);
+
                 listView.setAdapter(adapter);
+
+				// Fixes scrolling bug (header view)
+				if(listView.getHeaderViewsCount() == 1) listView.removeHeaderView(header);
 
 				long time = System.currentTimeMillis();
 
