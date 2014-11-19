@@ -3,6 +3,7 @@ package net.evenh.chargingstations.views.fragments;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,10 +114,19 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 			hintText.setText(R.string.search_for_something);
 
 			ChargerListAdapter adapter = (ChargerListAdapter) listView.getAdapter();
-			adapter.clear();
-			adapter.notifyDataSetChanged();
+			if(adapter != null) {
+				adapter.clear();
+				adapter.notifyDataSetChanged();
+			}
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void setMenuVisibility(final boolean visible) {
+		super.setMenuVisibility(visible);
+		// Close keyboard whenever the user navigates to the "Near Me" fragment
+		if (!visible && searchView != null) searchView.clearFocus();
 	}
 }
