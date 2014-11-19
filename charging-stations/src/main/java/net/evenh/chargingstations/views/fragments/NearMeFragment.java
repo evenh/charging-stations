@@ -38,7 +38,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by evenh on 06/11/14.
+ * Shows a user chargers near his/her current location
+ *
+ * @author Even Holthe
+ * @since 1.0.0
  */
 public class NearMeFragment extends Fragment implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener, SwipeRefreshLayout.OnRefreshListener {
 	public static final String TAG = "NearMeFragment";
@@ -46,6 +49,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	private View header;
 	private SwipeRefreshLayout swipeLayout;
 	private ListView listView;
+	private TextView noResults;
 
 	private LocationClient mLocationClient;
 	public static Location mCurrentLocation;
@@ -71,8 +75,9 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_nearme, container, false);
-		// Inflate listview
+		// Inflate listview and error message
 		listView = (ListView) view.findViewById(R.id.listView);
+		noResults = (TextView) view.findViewById(R.id.no_results_found);
 		// Inflate header
 		header = inflater.inflate(R.layout.item_charger_header, listView, false);
 
@@ -122,6 +127,9 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		Log.d(TAG, "Connected to Google Play Services");
 		mCurrentLocation = mLocationClient.getLastLocation();
 		mLocationClient.requestLocationUpdates(mLocationRequest, this);
+
+		// Remove "No results found" text if exists
+		noResults.setText("");
 	}
 
 	@Override
@@ -170,6 +178,8 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		final DateFormat timeFormat = DateFormat.getTimeInstance();
 
 		NobilService api = NobilClient.getInstance().getApi();
+		
+		// TODO: Settings for range and number of chargers?
 		api.getChargersNearLocation(latitude, longitude, 5000, 15, new Callback<ArrayList<Charger>>() {
 			@Override
 			public void success(ArrayList<Charger> chargers, Response response) {
@@ -190,12 +200,20 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 				));
 
 				listView.addHeaderView(header);
+
+				listView.setVisibility(View.VISIBLE);
+				noResults.setVisibility(View.GONE);
+
                 indicator.dismiss();
 			}
 
 			@Override
 			public void failure(RetrofitError retrofitError) {
-				// TODO: Implement failhandler
+				listView.setVisibility(View.GONE);
+				noResults.setVisibility(View.VISIBLE);
+				noResults.setText(R.string.no_chargers_nearby);
+
+				indicator.dismiss();
 			}
 		});
 	}
