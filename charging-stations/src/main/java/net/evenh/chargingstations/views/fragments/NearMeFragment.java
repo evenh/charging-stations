@@ -157,6 +157,10 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	}
 
 	@Override
+	public void onDisconnected() {
+	}
+
+	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		if (connectionResult.hasResolution()) {
 			try {

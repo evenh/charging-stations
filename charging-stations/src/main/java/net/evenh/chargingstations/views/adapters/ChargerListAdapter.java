@@ -1,6 +1,7 @@
 package net.evenh.chargingstations.views.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
+import net.evenh.chargingstations.ChargerDetail;
 import net.evenh.chargingstations.R;
 import net.evenh.chargingstations.Utils;
 import net.evenh.chargingstations.models.charger.Charger;
@@ -35,6 +37,7 @@ public class ChargerListAdapter extends ArrayAdapter<Charger> {
         ImageView image;
         TextView name;
         TextView distance;
+		String id;
     }
 
     @Override
@@ -56,6 +59,7 @@ public class ChargerListAdapter extends ArrayAdapter<Charger> {
         }
 
         viewHolder.name.setText(charger.getName());
+		viewHolder.id = charger.getInternationalId();
 
 		// Find distance
 		Location from = new Location(NearMeFragment.mCurrentLocation);
@@ -77,6 +81,16 @@ public class ChargerListAdapter extends ArrayAdapter<Charger> {
 
 		String url = !imageFile.equals("Kommer") ? "http://www.nobil.no/img/ladestasjonbilder/tn_" + imageFile : "http://www.nobil.no/img/cp_img_missing.jpg";
 		Picasso.with(context).load(url).into(viewHolder.image);
+
+		convertView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ViewHolder vh = (ViewHolder) v.getTag();
+				Intent details = new Intent(context, ChargerDetail.class);
+				details.putExtra("id", vh.id);
+				context.startActivity(details);
+			}
+		});
 
         return convertView;
     }
