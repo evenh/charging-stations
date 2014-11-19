@@ -144,6 +144,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 
 	@Override
 	public void onDisconnected() {
+		Log.d(TAG, "Disconnected Google Play Services :(");
 	}
 
 	@Override
