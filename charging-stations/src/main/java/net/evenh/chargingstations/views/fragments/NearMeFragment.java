@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
@@ -114,6 +115,15 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 
 		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(this);
+
+		// Enables scroll to refresh when having multiple childs of a SwipeRefreshLayout
+		listView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+			@Override
+			public void onScrollChanged() {
+				if(listView.getChildAt(0).getTop() == 0) swipeLayout.setEnabled(true);
+				else swipeLayout.setEnabled(false);
+			}
+		});
 	}
 
 	@Override
