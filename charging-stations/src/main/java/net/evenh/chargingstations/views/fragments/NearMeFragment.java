@@ -24,6 +24,7 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
 
 import net.evenh.chargingstations.R;
+import net.evenh.chargingstations.Utils;
 import net.evenh.chargingstations.api.NobilClient;
 import net.evenh.chargingstations.api.NobilService;
 import net.evenh.chargingstations.models.charger.Charger;
@@ -115,6 +116,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 
 		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(this);
+		swipeLayout.setSize(SwipeRefreshLayout.LARGE);
 
 		// Enables scroll to refresh when having multiple childs of a SwipeRefreshLayout
 		listView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -138,13 +140,20 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		mCurrentLocation = mLocationClient.getLastLocation();
 		mLocationClient.requestLocationUpdates(mLocationRequest, this);
 
+		// Provide a fixed location for the emulator
+		if(Utils.isAndroidEmulator()){
+			Log.i(TAG, "Detected emulator, simulating location...");
+
+			Location mockLocation = new Location("Pilestredet 35 Mock Location Provider");
+			mockLocation.setLatitude(59.919570);
+			mockLocation.setLongitude(10.735562);
+
+			mLocationClient.setMockLocation(mockLocation);
+			onLocationChanged(mockLocation);
+		}
+
 		// Remove "No results found" text if exists
 		noResults.setText("");
-	}
-
-	@Override
-	public void onDisconnected() {
-		Log.d(TAG, "Disconnected Google Play Services :(");
 	}
 
 	@Override
