@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="distance_entries">
+        <item>1 km</item>
+        <item>2 km</item>
+        <item>3 km</item>
+        <item>4 km</item>
+        <item>5 km</item>
+        <item>10 km</item>
+        <item>20 km</item>
+        <item>50 km</item>
+        <item>100 km</item>
+    </string-array>
+    <string-array name="distance_values">
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>20000</item>
+        <item>50000</item>
+        <item>100000</item>
+    </string-array>
+    <string-array name="limit_entries">
+        <item>5</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+    <string-array name="limit_values">
+        <item>5</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+</resources>

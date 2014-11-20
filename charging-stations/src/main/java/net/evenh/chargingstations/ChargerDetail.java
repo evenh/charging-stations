@@ -137,8 +137,8 @@ public class ChargerDetail extends Activity {
 
 				// Build up information string
 				StringBuilder sb = new StringBuilder();
-				sb.append(String.format(getResources().getString(R.string.owned_by), charger.getOwnedBy()) + "\n\n");
-				// Strip out bad HTML from the Nobil API
+				// Remember to strip out bad HTML from the Nobil API
+				sb.append(String.format(getResources().getString(R.string.owned_by), android.text.Html.fromHtml(charger.getOwnedBy())) + "\n\n");
 				sb.append(android.text.Html.fromHtml(charger.getContactInfo()));
 
 

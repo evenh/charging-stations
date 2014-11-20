@@ -39,6 +39,10 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="net.evenh.chargingstations.MainActivity" />
         </activity>
+        <activity android:name="net.evenh.chargingstations.SettingsActivity"
+                android:screenOrientation="portrait"
+                android:label="@string/action_settings"
+                android:parentActivityName="net.evenh.chargingstations.MainActivity" />
     </application>
 
 </manifest>

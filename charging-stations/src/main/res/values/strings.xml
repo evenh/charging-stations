@@ -41,4 +41,12 @@
     <string name="busy">Busy (charging)</string>
     <string name="reserved">Reserved</string>
 
+    <!-- Preferences -->
+    <string name="key_distance">DISTANCE</string>
+    <string name="key_limit">LIMIT</string>
+    <string name="title_distance">Search radius</string>
+    <string name="title_limit">Limit number of results</string>
+    <string name="summary_distance">Radius is set to %s</string>
+    <string name="summary_limit">Will not return more than %s charging points</string>
+
 </resources>

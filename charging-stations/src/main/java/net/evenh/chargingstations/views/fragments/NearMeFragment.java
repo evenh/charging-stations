@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,6 +63,9 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	private String address;
 
     private ProgressDialog indicator;
+
+	private int distance;
+	private int limit;
 
 	// Milliseconds per second
 	private static final int MILLISECONDS_PER_SECOND = 1000;
@@ -136,6 +141,17 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 
 	@Override
 	public void onConnected(Bundle bundle) {
+		// Get the users settings
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		try {
+			distance = Integer.parseInt(settings.getString(getResources().getString(R.string.key_distance), "3000"));
+			limit = Integer.parseInt(settings.getString(getResources().getString(R.string.key_limit), "25"));
+		} catch (NumberFormatException nfe){
+			Log.d(TAG, "Could not convert Settings' strings to integers, setting default values for 'Near me'");
+			distance = 3000;
+			limit = 25;
+		}
+
 		Log.d(TAG, "Connected to Google Play Services");
 		mCurrentLocation = mLocationClient.getLastLocation();
 		mLocationClient.requestLocationUpdates(mLocationRequest, this);
@@ -202,9 +218,8 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		final DateFormat timeFormat = DateFormat.getTimeInstance();
 
 		NobilService api = NobilClient.getInstance().getApi();
-		
-		// TODO: Settings for range and number of chargers?
-		api.getChargersNearLocation(latitude, longitude, 1000, 10, new Callback<ArrayList<Charger>>() {
+
+		api.getChargersNearLocation(latitude, longitude, distance, limit, new Callback<ArrayList<Charger>>() {
 			@Override
 			public void success(ArrayList<Charger> chargers, Response response) {
                 ChargerListAdapter adapter = new ChargerListAdapter(getActivity(), chargers);

@@ -4,7 +4,9 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -31,6 +33,9 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		// Set default values
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		// Check for Google Play Services
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
@@ -87,8 +92,8 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_settings:
-				Log.d(TAG, "Settings tapped!");
-				// TODO: Implement settings
+				Intent settingsIntent = new Intent(this, SettingsActivity.class);
+				startActivity(settingsIntent);
 				return true;
 		}
 

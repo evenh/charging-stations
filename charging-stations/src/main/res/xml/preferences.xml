@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/near_me">
+        <ListPreference
+                android:defaultValue="3000"
+                android:key="@string/key_distance"
+                android:title="@string/title_distance"
+                android:summary="@string/summary_distance"
+                android:entries="@array/distance_entries"
+                android:entryValues="@array/distance_values"/>
+
+        <ListPreference
+                android:defaultValue="25"
+                android:key="@string/key_limit"
+                android:title="@string/title_limit"
+                android:summary="@string/summary_limit"
+                android:entries="@array/limit_entries"
+                android:entryValues="@array/limit_values"/>
+    </PreferenceCategory>
+</PreferenceScreen>
