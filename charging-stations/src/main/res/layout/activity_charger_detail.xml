@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/charger_information"
                 android:id="@+id/charger_information_header"
                 android:layout_below="@+id/charger_image" android:layout_alignParentStart="true"/>
@@ -37,7 +38,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/charging_points"
                 android:id="@+id/charger_points" android:layout_below="@+id/charger_information"
                 android:layout_alignParentStart="true"/>
