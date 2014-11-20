@@ -1,4 +1,4 @@
-package net.evenh.chargingstations;
+package net.evenh.chargingstations.util;
 
 import android.os.Build;
 

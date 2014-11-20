@@ -26,7 +26,8 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
 
 import net.evenh.chargingstations.R;
-import net.evenh.chargingstations.Utils;
+import net.evenh.chargingstations.util.RefreshState;
+import net.evenh.chargingstations.util.Utils;
 import net.evenh.chargingstations.api.NobilClient;
 import net.evenh.chargingstations.api.NobilService;
 import net.evenh.chargingstations.models.charger.Charger;
@@ -78,6 +79,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	// A fast frequency ceiling in milliseconds
 	private static final long FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
 
+	private RefreshState rs;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		rs = RefreshState.getInstance();
 		mLocationClient = new LocationClient(getActivity(), this, this);
 
 		mLocationRequest = LocationRequest.create();
@@ -110,6 +113,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 
 	@Override public void onRefresh() {
 		indicator.show();
+		rs.setRefreshed(false);
 		onConnected(null);
 		swipeLayout.setRefreshing(false);
 	}
@@ -164,6 +168,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 			mockLocation.setLatitude(59.919570);
 			mockLocation.setLongitude(10.735562);
 
+			mCurrentLocation = mockLocation;
 			mLocationClient.setMockLocation(mockLocation);
 			onLocationChanged(mockLocation);
 		}
@@ -193,6 +198,10 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	@Override
 	public void onLocationChanged(Location location) {
 		Log.d(TAG, "Got high accurancy location!");
+
+		// Enable automatic refresh if location has changed by >50 meters
+		if(mCurrentLocation.distanceTo(location) > 50) rs.setRefreshed(false);
+
 		mCurrentLocation = location;
 		mLocationClient.removeLocationUpdates(this);
 
@@ -204,7 +213,11 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 			address = getResources().getString(R.string.no_address_found);
 		}
 
-		showChargersNearLocation();
+		// Refresh one time, then disable until the user moves >50 meters or uses pull to refresh
+		if(!rs.isRefreshed()) {
+			showChargersNearLocation();
+			rs.setRefreshed(true);
+		}
 	}
 
 	private void showChargersNearLocation() {

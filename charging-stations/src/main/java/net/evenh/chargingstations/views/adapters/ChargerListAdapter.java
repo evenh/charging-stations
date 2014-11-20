@@ -3,7 +3,6 @@ package net.evenh.chargingstations.views.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import net.evenh.chargingstations.ChargerDetail;
 import net.evenh.chargingstations.R;
-import net.evenh.chargingstations.Utils;
+import net.evenh.chargingstations.util.Utils;
 import net.evenh.chargingstations.models.charger.Charger;
 import net.evenh.chargingstations.views.fragments.NearMeFragment;
 
