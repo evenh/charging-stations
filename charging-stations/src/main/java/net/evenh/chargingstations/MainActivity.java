@@ -64,8 +64,8 @@ public class MainActivity extends FragmentActivity {
 			};
 
 			//Add New Tab
-			actionBar.addTab(actionBar.newTab().setText(R.string.near_me).setTabListener(tabListener));
-			actionBar.addTab(actionBar.newTab().setText(R.string.search).setTabListener(tabListener));
+			actionBar.addTab(actionBar.newTab().setText(R.string.near_me).setIcon(R.drawable.ic_action_place).setTabListener(tabListener));
+			actionBar.addTab(actionBar.newTab().setText(R.string.search).setIcon(R.drawable.ic_action_search).setTabListener(tabListener));
 		} else {
 			// Google Play Services error handling
 			Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this, -1);
