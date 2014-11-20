@@ -3,7 +3,10 @@ package net.evenh.chargingstations;
 import android.os.Build;
 
 /**
- * Created by evenh on 18/11/14.
+ * A simple collection of small utility methods
+ *
+ * @author Even Holthe
+ * @since 1.0.0
  */
 public class Utils {
 	private static final String TAG = "Utils";

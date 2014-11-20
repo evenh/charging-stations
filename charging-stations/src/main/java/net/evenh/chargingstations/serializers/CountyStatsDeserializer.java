@@ -9,7 +9,10 @@ import net.evenh.chargingstations.models.stats.MunicipalityStats;
 import java.lang.reflect.Type;
 
 /**
- * Created by evenh on 14/11/14.
+ * Deserializer for county/municipality/detailed municipality stats
+ *
+ * @author Even Holthe
+ * @since 1.0.0
  */
 public class CountyStatsDeserializer implements JsonDeserializer<CountyStats> {
 	@Override

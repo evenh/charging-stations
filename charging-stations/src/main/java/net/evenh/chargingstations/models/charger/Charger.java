@@ -6,7 +6,12 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * Representation of a charger, mapped to Nobil's API
+ *
+ * @author Even Holthe
+ * @since 1.0.0
+ */
 public class Charger {
 
 	@SerializedName("Available_charging_points")

@@ -7,7 +7,10 @@ import net.evenh.chargingstations.views.fragments.NearMeFragment;
 import net.evenh.chargingstations.views.fragments.SearchFragment;
 
 /**
- * Created by evenh on 06/11/14.
+ * A simple adapter for the different tabs (MainActivity)
+ *
+ * @author Even Holthe
+ * @since 1.0.0
  */
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
 

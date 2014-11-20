@@ -1,7 +1,10 @@
 package net.evenh.chargingstations.models.charger;
 
 /**
- * Created by evenh on 06/11/14.
+ * A class for holding a single attribute in Nobil's API
+ *
+ * @author Even Holthe
+ * @since 1.0.0
  */
 public class Attribute {
 	private String key;

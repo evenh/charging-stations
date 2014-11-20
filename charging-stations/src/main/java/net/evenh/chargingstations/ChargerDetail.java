@@ -112,6 +112,11 @@ public class ChargerDetail extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Fetches the information and places it into the view
+	 *
+	 * @since 1.0.0
+	 */
 	private void loadChargerStation() {
 		indicator.show();
 
@@ -156,6 +161,14 @@ public class ChargerDetail extends Activity {
 		});
 	}
 
+	/**
+	 * Convenience method for creating a single table row
+	 *
+	 * @param attributes A set of charger attributes
+	 * @param n Which charger number is this?
+	 * @return A populated TableRow
+	 * @since 1.0.0
+	 */
 	private TableRow generateTableRow(ArrayList<Attribute> attributes, int n) {
 		boolean vacantIsSet = false;
 

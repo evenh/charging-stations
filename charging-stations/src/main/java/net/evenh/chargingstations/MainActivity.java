@@ -12,7 +12,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import net.evenh.chargingstations.views.adapters.TabPagerAdapter;
 
-
+/**
+ * The main activity, displaying tabs
+ *
+ * @author Even Holthe
+ * @since 1.0.0
+ */
 public class MainActivity extends FragmentActivity {
 	private ViewPager Tab;
 	private TabPagerAdapter TabAdapter;

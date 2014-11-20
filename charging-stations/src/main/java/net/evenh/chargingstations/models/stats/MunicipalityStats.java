@@ -3,7 +3,10 @@ package net.evenh.chargingstations.models.stats;
 import com.google.gson.annotations.Expose;
 
 /**
- * Created by evenh on 14/11/14.
+ * A representation of municipality stats
+ *
+ * @author Even Holthe
+ * @since 1.0.0
  */
 public class MunicipalityStats extends CountyStats {
 	@Expose

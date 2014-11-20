@@ -20,7 +20,10 @@ import net.evenh.chargingstations.views.fragments.NearMeFragment;
 import java.util.ArrayList;
 
 /**
- * Created by evenh on 18/11/14.
+ * A custom adapter for Charger objects
+ *
+ * @author Even Holthe
+ * @since 1.0.0
  */
 public class ChargerListAdapter extends ArrayAdapter<Charger> {
 	private static final String TAG = "ChargerListAdapter";
