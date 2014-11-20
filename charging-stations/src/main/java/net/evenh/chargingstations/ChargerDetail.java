@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -187,24 +188,44 @@ public class ChargerDetail extends Activity {
 			if(a.getKey().equals("Connector sensor status") || a.getKey().equals("Connector status")){
 				String status = a.getDescription();
 
-				Log.d(TAG, "Charger availability: " + status);
-				// TODO: test this
-
 				if(status.equals("Busy (charging)") && !vacantIsSet){
-					vacant.setText(String.format(getResources().getString(R.string.detail_vacant), getResources().getString(R.string.busy)));
+					vacant.setText(Html.fromHtml(String.format(
+							getResources().getString(R.string.detail_vacant),
+							"<font color='#FF0000'>" + getResources().getString(R.string.busy) + "</font>"
+					)));
+
 					vacantIsSet = true;
 				} else if (status.equals("Reserved") && !vacantIsSet){
-					vacant.setText(String.format(getResources().getString(R.string.detail_vacant), getResources().getString(R.string.reserved)));
+					vacant.setText(Html.fromHtml(String.format(
+							getResources().getString(R.string.detail_vacant),
+							"<font color='#FF9933'>" + getResources().getString(R.string.reserved) + "</font>"
+					)));
+
 					vacantIsSet = true;
 				} else if (status.equals("Vacant") && !vacantIsSet){
-					vacant.setText(String.format(getResources().getString(R.string.detail_vacant), getResources().getString(R.string.available)));
+					vacant.setText(Html.fromHtml(String.format(
+							getResources().getString(R.string.detail_vacant),
+							"<font color='#339933'>" + getResources().getString(R.string.available) + "</font>"
+					)));
 					vacantIsSet = true;
 				}
 			}
 
 			// Check for empty values
+			if(connector.getText().equals(getResources().getString(R.string.detail_connector))){
+				manufacturer.setText(String.format(getResources().getString(R.string.detail_connector), getResources().getString(R.string.not_specified)));
+			}
+			if(capacity.getText().equals(getResources().getString(R.string.detail_capacity))){
+				manufacturer.setText(String.format(getResources().getString(R.string.detail_capacity), getResources().getString(R.string.not_specified)));
+			}
+			if(vehicleType.getText().equals(getResources().getString(R.string.detail_vehicle_type))){
+				manufacturer.setText(String.format(getResources().getString(R.string.detail_vehicle_type), getResources().getString(R.string.not_specified)));
+			}
 			if(manufacturer.getText().equals(getResources().getString(R.string.detail_manufacturer))){
 				manufacturer.setText(String.format(getResources().getString(R.string.detail_manufacturer), getResources().getString(R.string.not_specified)));
+			}
+			if(chargeMode.getText().equals(getResources().getString(R.string.detail_charge_mode))){
+				chargeMode.setText(String.format(getResources().getString(R.string.detail_charge_mode), getResources().getString(R.string.not_specified)));
 			}
 		}
 
