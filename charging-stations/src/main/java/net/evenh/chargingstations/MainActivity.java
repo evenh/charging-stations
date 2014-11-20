@@ -7,6 +7,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -19,6 +22,7 @@ import net.evenh.chargingstations.views.adapters.TabPagerAdapter;
  * @since 1.0.0
  */
 public class MainActivity extends FragmentActivity {
+	private static final String TAG = "MainActivity";
 	private ViewPager Tab;
 	private TabPagerAdapter TabAdapter;
 	private ActionBar actionBar;
@@ -71,5 +75,23 @@ public class MainActivity extends FragmentActivity {
 			Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this, -1);
 			dialog.show();
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_settings:
+				Log.d(TAG, "Settings tapped!");
+				// TODO: Implement settings
+				return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 }
