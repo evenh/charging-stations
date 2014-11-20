@@ -8,28 +8,13 @@
             android:paddingBottom="@dimen/activity_vertical_margin"
             tools:context="net.evenh.chargingstations.ChargerDetail">
     <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
-
         <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="250dp"
-                android:background="#000000"
+                android:background="#D4D4D4"
                 android:padding="1dp"
                 android:id="@+id/charger_image" android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"/>
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_marginTop="5dp"
-                android:text="@string/charging_points"
-                android:id="@+id/charger_points" android:layout_below="@+id/charger_image"
-                android:layout_alignParentStart="true"/>
-        <TableLayout
-                android:id="@+id/charger_points_table"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:layout_below="@+id/charger_points"
-                android:layout_alignParentStart="true">
-        </TableLayout>
 
         <TextView
                 android:layout_width="fill_parent"
@@ -37,9 +22,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_marginTop="5dp"
                 android:text="@string/charger_information"
-                android:id="@+id/textView"
-                android:layout_below="@+id/charger_points_table" android:layout_alignParentStart="true"/>
-
+                android:id="@+id/charger_information_header"
+                android:layout_below="@+id/charger_image" android:layout_alignParentStart="true"/>
 
         <TextView
                 android:id="@+id/charger_information"
@@ -47,7 +31,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="email|web"
-                android:layout_below="@+id/textView" android:layout_alignParentStart="true"/>
+                android:layout_below="@+id/charger_information_header" android:layout_alignParentStart="true"/>
+
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginTop="10dp"
+                android:text="@string/charging_points"
+                android:id="@+id/charger_points" android:layout_below="@+id/charger_information"
+                android:layout_alignParentStart="true"/>
+        <TableLayout
+                android:id="@+id/charger_points_table"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_below="@+id/charger_points"
+                android:layout_alignParentStart="true">
+        </TableLayout>
 
     </RelativeLayout>
 </ScrollView>
