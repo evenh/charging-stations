@@ -4,11 +4,12 @@
     <string name="app_name">Charging Stations</string>
     <string name="action_settings">Settings</string>
     <string name="gps_install">Please install Google Play Services</string>
+    <string name="loading">Loading, please wait...</string>
 
     <!-- Near Me Fragment -->
     <string name="near_me">Near me</string>
     <string name="indicator_message">Finding chargers near you...</string>
-    <string name="last_updated">Last updated at %s</string>
+    <string name="last_updated">Got %1$s chargers at %2$s</string>
     <string name="no_address_found">No address found</string>
     <string name="no_chargers_nearby">No chargers nearby</string>
 
@@ -21,5 +22,23 @@
 
     <!-- Details -->
     <string name="title_activity_charger_detail">Details</string>
+    <string name="directions">Directions</string>
+    <string name="loading_charger_point">Loading charger point...</string>
+    <string name="charger_information">Information</string>
+    <string name="charging_points">Charging points</string>
+    <string name="owned_by">Owned by %s.</string>
+
+    <!-- Detail row -->
+    <string name="detail_connector">Connector type: %s</string>
+    <string name="detail_capacity">Charging capacity: %s</string>
+    <string name="detail_vehicle_type">Vehicle type: %s</string>
+    <string name="detail_charge_mode">Charge mode: %s</string>
+    <string name="detail_manufacturer">Manufacturer: %s</string>
+    <string name="detail_vacant">Vacant: %s</string>
+    <!-- Vacancy specific -->
+    <string name="not_specified">Not specified</string>
+    <string name="available">Available</string>
+    <string name="busy">Busy (charging)</string>
+    <string name="reserved">Reserved</string>
 
 </resources>

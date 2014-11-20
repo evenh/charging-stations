@@ -204,7 +204,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		NobilService api = NobilClient.getInstance().getApi();
 		
 		// TODO: Settings for range and number of chargers?
-		api.getChargersNearLocation(latitude, longitude, 5000, 15, new Callback<ArrayList<Charger>>() {
+		api.getChargersNearLocation(latitude, longitude, 1000, 10, new Callback<ArrayList<Charger>>() {
 			@Override
 			public void success(ArrayList<Charger> chargers, Response response) {
                 ChargerListAdapter adapter = new ChargerListAdapter(getActivity(), chargers);
@@ -220,8 +220,11 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 
 				updatedText.setText(String.format(
 						getResources().getString(R.string.last_updated),
-						dateFormat.format(time) + " " + timeFormat.format(time)
-				));
+						chargers.size(),
+						(dateFormat.format(time) + " " + timeFormat.format(time)
+				)));
+
+
 
 				listView.addHeaderView(header);
 
