@@ -56,4 +56,9 @@
     <string name="summary_distance">Radius is set to %s</string>
     <string name="summary_limit">Will not return more than %s charging points</string>
 
+    <!-- About screen -->
+    <string name="about">About</string>
+    <string name="version" translatable="false">v%s</string>
+    <string name="about_message1">Created by Even Holthe, during the App Development course at HiOA.</string>
+    <string name="about_message2">Data provided by Nobil under the Creative Commons 3.0 Unported license</string>
 </resources>

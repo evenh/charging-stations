@@ -6,14 +6,19 @@ import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.text.Html;
+import android.text.Spanned;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import net.evenh.chargingstations.util.Utils;
@@ -127,8 +132,51 @@ public class MainActivity extends FragmentActivity {
 				Intent settingsIntent = new Intent(this, SettingsActivity.class);
 				startActivity(settingsIntent);
 				return true;
+
+			case R.id.action_about:
+				displayAboutBox();
+				return true;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Displays an about box containing Nobil's license
+	 *
+	 * @author Even Holthe
+	 * @since 1.0.0
+	 */
+	private void displayAboutBox() {
+		String version = "0.0.1";
+		PackageManager manager = getPackageManager();
+		try {
+			PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
+			version = info.versionName;
+		} catch (PackageManager.NameNotFoundException nnfe){}
+
+
+		StringBuilder sb = new StringBuilder("");
+		sb.append(getResources().getString(R.string.app_name) + " ");
+		sb.append(String.format(getResources().getString(R.string.version), version) + "\n\n");
+
+		sb.append(getResources().getString(R.string.about_message1) + "\n\n");
+		sb.append(getResources().getString(R.string.about_message2) + "\n");
+
+		Dialog about = new AlertDialog.Builder(this)
+				.setTitle(R.string.about)
+				.setMessage(sb.toString())
+				.setPositiveButton(R.string.internet_dialog_ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				})
+				.create();
+
+
+
+
+		about.show();
 	}
 }

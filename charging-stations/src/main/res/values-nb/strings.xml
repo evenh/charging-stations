@@ -39,4 +39,7 @@
     <string name="internet_dialog_ok">OK</string>
     <string name="internet_dialog_title">Ingen internett-forbindelse</string>
     <string name="internet_dialog_message">Internett-forbindelse er påkrevd. Åpne systeminnstillinger?</string>
+    <string name="about">Om</string>
+    <string name="about_message1">Laget av Even Holthe, gjennom faget Applikasjonsutvikling ved HiOA.</string>
+    <string name="about_message2">Data fra Nobil under Creative Commons 3.0 Unported-lisensen.</string>
 </resources>
