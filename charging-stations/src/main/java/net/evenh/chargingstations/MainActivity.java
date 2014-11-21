@@ -13,14 +13,11 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.text.Spanned;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import net.evenh.chargingstations.util.RefreshState;
 import net.evenh.chargingstations.util.Utils;
 import net.evenh.chargingstations.views.adapters.TabPagerAdapter;
 
@@ -178,5 +175,11 @@ public class MainActivity extends FragmentActivity {
 
 
 		about.show();
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		RefreshState.getInstance().setRefreshed(false);
 	}
 }
