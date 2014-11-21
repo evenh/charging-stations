@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ladestasjoner</string>
+    <string name="action_settings">Innstillinger</string>
+    <string name="available">Ledig</string>
+    <string name="busy">Opptatt (i bruk)</string>
+    <string name="charger_information">Informasjon</string>
+    <string name="charging_points">Ladepunkter</string>
+    <string name="detail_capacity">Ladekapasitet: %s</string>
+    <string name="detail_charge_mode">Lademodus: %s</string>
+    <string name="detail_connector">Tilkoblingstype: %s</string>
+    <string name="detail_manufacturer">Produsent: %s</string>
+    <string name="detail_vacant">Ladestatus: %s</string>
+    <string name="detail_vehicle_type">Kjøretøystype: %s</string>
+    <string name="directions">Veibeskrivelse</string>
+    <string name="gps_install">Vennligst installer Google Play Services</string>
+    <string name="indicator_message">Finner ladestasjoner i nærheten...</string>
+    <string name="indicator_settings">Tar i bruk innstillinger...</string>
+    <string name="last_updated">Hentet %1$s ladere %2$s</string>
+    <string name="loading">Laster inn, vennligst vent...</string>
+    <string name="loading_charger_point">Henter ladestasjon...</string>
+    <string name="near_me">I nærheten</string>
+    <string name="no_address_found">Ingen adresse funnet</string>
+    <string name="no_chargers_nearby">Ingen i nærheten</string>
+    <string name="no_results">Ingen treff</string>
+    <string name="not_specified">Ikke oppgitt</string>
+    <string name="owned_by">Eies av %s.</string>
+    <string name="please_enter_a_city">Oppgi en by</string>
+    <string name="reserved">Reservert</string>
+    <string name="search">Søk</string>
+    <string name="search_for_something">Søk etter et sted</string>
+    <string name="searching_for_chargers">Søker etter ladepunkter...</string>
+    <string name="summary_distance">Radius er satt til %s</string>
+    <string name="summary_limit">Returnerer maksimalt %s ladepunkter</string>
+    <string name="title_activity_charger_detail">Detaljer</string>
+    <string name="title_distance">Søkeradius</string>
+    <string name="title_limit">Begrens antall ladepunkter</string>
+</resources>

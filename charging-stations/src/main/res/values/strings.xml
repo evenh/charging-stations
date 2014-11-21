@@ -43,8 +43,8 @@
     <string name="reserved">Reserved</string>
 
     <!-- Preferences -->
-    <string name="key_distance">DISTANCE</string>
-    <string name="key_limit">LIMIT</string>
+    <string name="key_distance" translatable="false">DISTANCE</string>
+    <string name="key_limit" translatable="false">LIMIT</string>
     <string name="title_distance">Search radius</string>
     <string name="title_limit">Limit number of results</string>
     <string name="summary_distance">Radius is set to %s</string>
