@@ -3,7 +3,6 @@ package net.evenh.chargingstations.views.fragments;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,10 +70,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 		indicator.setMessage(getResources().getString(R.string.searching_for_chargers));
 		indicator.show();
 
-		api.getChargersForAddress(query, new Callback<ArrayList<Charger>>() {
+		api.getChargersForPlace(query, new Callback<ArrayList<Charger>>() {
 			@Override
 			public void success(ArrayList<Charger> chargers, Response response) {
-				if(chargers.size() > 0){
+				if (chargers.size() > 0) {
 					listView.setVisibility(View.VISIBLE);
 					hintText.setVisibility(View.GONE);
 
