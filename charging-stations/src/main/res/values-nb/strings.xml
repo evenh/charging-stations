@@ -35,4 +35,8 @@
     <string name="title_activity_charger_detail">Detaljer</string>
     <string name="title_distance">Søkeradius</string>
     <string name="title_limit">Begrens antall ladepunkter</string>
+    <string name="internet_dialog_cancel">Avbryt</string>
+    <string name="internet_dialog_ok">OK</string>
+    <string name="internet_dialog_title">Ingen internett-forbindelse</string>
+    <string name="internet_dialog_message">Internett-forbindelse er påkrevd. Åpne systeminnstillinger?</string>
 </resources>

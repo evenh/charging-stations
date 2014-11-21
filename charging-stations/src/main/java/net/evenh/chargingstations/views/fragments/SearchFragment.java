@@ -13,6 +13,7 @@ import net.evenh.chargingstations.R;
 import net.evenh.chargingstations.api.NobilClient;
 import net.evenh.chargingstations.api.NobilService;
 import net.evenh.chargingstations.models.charger.Charger;
+import net.evenh.chargingstations.util.Utils;
 import net.evenh.chargingstations.views.adapters.ChargerListAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -92,7 +93,12 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 			public void failure(RetrofitError retrofitError) {
 				listView.setVisibility(View.GONE);
 				hintText.setVisibility(View.VISIBLE);
-				hintText.setText(R.string.no_results);
+
+				if(Utils.hasInternet(getActivity())) {
+					hintText.setText(R.string.no_results);
+				} else {
+					hintText.setText(R.string.internet_dialog_title);
+				}
 
 				indicator.dismiss();
 			}

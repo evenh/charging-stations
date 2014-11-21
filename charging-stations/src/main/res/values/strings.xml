@@ -6,6 +6,12 @@
     <string name="gps_install">Please install Google Play Services</string>
     <string name="loading">Loading, please wait...</string>
 
+    <!-- Internet connectivity dialog -->
+    <string name="internet_dialog_title">No internet connection</string>
+    <string name="internet_dialog_message">Internet connection needed. Open settings to resolve this problem?</string>
+    <string name="internet_dialog_cancel">Cancel</string>
+    <string name="internet_dialog_ok">OK</string>
+
     <!-- Near Me Fragment -->
     <string name="near_me">Near me</string>
     <string name="indicator_message">Finding chargers near you...</string>

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -87,7 +88,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 				public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 					RefreshState.getInstance().setRefreshed(false);
 					indicator.setMessage(getResources().getString(R.string.indicator_settings));
-					indicator.show();
+					if(Utils.hasInternet(getActivity())) indicator.show();
 				}
 			};
 
@@ -122,15 +123,21 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
         indicator.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         indicator.setIndeterminate(true);
         indicator.setMessage(getResources().getString(R.string.indicator_message));
-        indicator.show();
+        if(Utils.hasInternet(getActivity())) indicator.show();
 	}
 
 	@Override public void onRefresh() {
 		indicator.setMessage(getResources().getString(R.string.indicator_message));
-		indicator.show();
-		rs.setRefreshed(false);
-		onConnected(null);
-		swipeLayout.setRefreshing(false);
+		if(Utils.hasInternet(getActivity())) {
+			indicator.show();
+			rs.setRefreshed(false);
+			onConnected(null);
+			swipeLayout.setRefreshing(false);
+		} else {
+			swipeLayout.setRefreshing(false);
+			indicator.dismiss();
+			Toast.makeText(getActivity(), R.string.internet_dialog_title, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
@@ -241,6 +248,8 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	 * @since 1.0.0
 	 */
 	private void showChargersNearLocation() {
+		if(!indicator.isShowing()) indicator.show();
+
 		String latitude = String.valueOf(mCurrentLocation.getLatitude());
 		String longitude = String.valueOf(mCurrentLocation.getLongitude());
 

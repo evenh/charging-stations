@@ -1,20 +1,22 @@
 package net.evenh.chargingstations;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import net.evenh.chargingstations.util.Utils;
 import net.evenh.chargingstations.views.adapters.TabPagerAdapter;
 
 /**
@@ -29,6 +31,8 @@ public class MainActivity extends FragmentActivity {
 	private TabPagerAdapter TabAdapter;
 	private ActionBar actionBar;
 
+	private Dialog dialog;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,9 +41,29 @@ public class MainActivity extends FragmentActivity {
 		// Set default values
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
+		// Check for internet connectivity
+		dialog = new AlertDialog.Builder(this)
+				.setTitle(R.string.internet_dialog_title)
+				.setMessage(R.string.internet_dialog_message)
+				.setCancelable(true)
+				.setNegativeButton(R.string.internet_dialog_cancel, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				})
+				.setPositiveButton(R.string.internet_dialog_ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+					}
+				})
+				.create();
+
+
 		// Check for Google Play Services
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
-		if(status == ConnectionResult.SUCCESS) {
+		if (status == ConnectionResult.SUCCESS) {
 			TabAdapter = new TabPagerAdapter(getFragmentManager());
 			Tab = (ViewPager) findViewById(R.id.pager);
 			Tab.setOnPageChangeListener(
@@ -78,6 +102,14 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			// Google Play Services error handling
 			Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this, -1);
+			dialog.show();
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (!Utils.hasInternet(this)) {
 			dialog.show();
 		}
 	}

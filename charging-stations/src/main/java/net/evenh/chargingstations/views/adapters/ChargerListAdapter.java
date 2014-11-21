@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import net.evenh.chargingstations.ChargerDetail;
 import net.evenh.chargingstations.R;
@@ -87,10 +88,14 @@ public class ChargerListAdapter extends ArrayAdapter<Charger> {
 		convertView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ViewHolder vh = (ViewHolder) v.getTag();
-				Intent details = new Intent(context, ChargerDetail.class);
-				details.putExtra("id", vh.id);
-				context.startActivity(details);
+				if(Utils.hasInternet(context)) {
+					ViewHolder vh = (ViewHolder) v.getTag();
+					Intent details = new Intent(context, ChargerDetail.class);
+					details.putExtra("id", vh.id);
+					context.startActivity(details);
+				} else {
+					Toast.makeText(context, R.string.internet_dialog_title, Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 
