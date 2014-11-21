@@ -9,6 +9,7 @@
     <!-- Near Me Fragment -->
     <string name="near_me">Near me</string>
     <string name="indicator_message">Finding chargers near you...</string>
+    <string name="indicator_settings">Applying updated settings...</string>
     <string name="last_updated">Got %1$s chargers at %2$s</string>
     <string name="no_address_found">No address found</string>
     <string name="no_chargers_nearby">No chargers nearby</string>

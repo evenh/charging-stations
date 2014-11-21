@@ -81,6 +81,16 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 
 	private RefreshState rs;
 
+	private SharedPreferences.OnSharedPreferenceChangeListener settingsChangedListener =
+			new SharedPreferences.OnSharedPreferenceChangeListener() {
+				@Override
+				public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+					RefreshState.getInstance().setRefreshed(false);
+					indicator.setMessage(getResources().getString(R.string.indicator_settings));
+					indicator.show();
+				}
+			};
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_nearme, container, false);
@@ -97,6 +107,10 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		rs = RefreshState.getInstance();
+
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		prefs.registerOnSharedPreferenceChangeListener(settingsChangedListener);
+
 		mLocationClient = new LocationClient(getActivity(), this, this);
 
 		mLocationRequest = LocationRequest.create();
@@ -104,7 +118,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		mLocationRequest.setInterval(UPDATE_INTERVAL);
 		mLocationRequest.setFastestInterval(FASTEST_INTERVAL_IN_SECONDS);
 
-        indicator = new ProgressDialog(getActivity());
+		indicator = new ProgressDialog(getActivity());
         indicator.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         indicator.setIndeterminate(true);
         indicator.setMessage(getResources().getString(R.string.indicator_message));
@@ -112,6 +126,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	}
 
 	@Override public void onRefresh() {
+		indicator.setMessage(getResources().getString(R.string.indicator_message));
 		indicator.show();
 		rs.setRefreshed(false);
 		onConnected(null);
@@ -220,6 +235,11 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		}
 	}
 
+	/**
+	 * Fetches new data and updates the UI
+	 *
+	 * @since 1.0.0
+	 */
 	private void showChargersNearLocation() {
 		String latitude = String.valueOf(mCurrentLocation.getLatitude());
 		String longitude = String.valueOf(mCurrentLocation.getLongitude());
@@ -271,5 +291,12 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 				indicator.dismiss();
 			}
 		});
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		prefs.unregisterOnSharedPreferenceChangeListener(settingsChangedListener);
 	}
 }
