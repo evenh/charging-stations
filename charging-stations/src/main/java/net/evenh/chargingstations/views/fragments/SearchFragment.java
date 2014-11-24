@@ -1,5 +1,6 @@
 package net.evenh.chargingstations.views.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -39,6 +40,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 	private NobilService api;
 
+	private Activity mActivity;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -48,6 +51,12 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 		listView = (ListView) view.findViewById(R.id.listView);
 
 		return view;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity = activity;
 	}
 
 	@Override
@@ -65,9 +74,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		indicator = new ProgressDialog(getActivity());
+		indicator = new ProgressDialog(mActivity);
 		indicator.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		indicator.setIndeterminate(true);
+		indicator.setCancelable(false);
 		indicator.setMessage(getResources().getString(R.string.searching_for_chargers));
 		indicator.show();
 
@@ -78,7 +88,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 					listView.setVisibility(View.VISIBLE);
 					hintText.setVisibility(View.GONE);
 
-					ChargerListAdapter adapter = new ChargerListAdapter(getActivity(), chargers);
+					ChargerListAdapter adapter = new ChargerListAdapter(mActivity, chargers);
 					listView.setAdapter(adapter);
 				} else {
 					listView.setVisibility(View.GONE);
@@ -94,7 +104,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 				listView.setVisibility(View.GONE);
 				hintText.setVisibility(View.VISIBLE);
 
-				if(Utils.hasInternet(getActivity())) {
+				if(Utils.hasInternet(mActivity)) {
 					hintText.setText(R.string.no_results);
 				} else {
 					hintText.setText(R.string.internet_dialog_title);

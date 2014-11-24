@@ -1,5 +1,6 @@
 package net.evenh.chargingstations.views.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -64,7 +65,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	private Geocoder geocoder;
 	private String address;
 
-    private ProgressDialog indicator;
+	private ProgressDialog indicator;
 
 	private int distance;
 	private int limit;
@@ -81,6 +82,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	private static final long FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
 
 	private RefreshState rs;
+	private Activity mActivity;
 
 	private SharedPreferences.OnSharedPreferenceChangeListener settingsChangedListener =
 			new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -88,7 +90,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 				public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 					RefreshState.getInstance().setRefreshed(false);
 					indicator.setMessage(getResources().getString(R.string.indicator_settings));
-					if(Utils.hasInternet(getActivity())) indicator.show();
+					if (Utils.hasInternet(mActivity)) indicator.show();
 				}
 			};
 
@@ -105,30 +107,38 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	}
 
 	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity = activity;
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		rs = RefreshState.getInstance();
 
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
 		prefs.registerOnSharedPreferenceChangeListener(settingsChangedListener);
 
-		mLocationClient = new LocationClient(getActivity(), this, this);
+		mLocationClient = new LocationClient(mActivity, this, this);
 
 		mLocationRequest = LocationRequest.create();
 		mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 		mLocationRequest.setInterval(UPDATE_INTERVAL);
 		mLocationRequest.setFastestInterval(FASTEST_INTERVAL_IN_SECONDS);
 
-		indicator = new ProgressDialog(getActivity());
-        indicator.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        indicator.setIndeterminate(true);
-        indicator.setMessage(getResources().getString(R.string.indicator_message));
-        if(Utils.hasInternet(getActivity())) indicator.show();
+		indicator = new ProgressDialog(mActivity);
+		indicator.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		indicator.setIndeterminate(true);
+		indicator.setCancelable(false);
+		indicator.setMessage(getResources().getString(R.string.indicator_message));
+		if (Utils.hasInternet(mActivity)) indicator.show();
 	}
 
-	@Override public void onRefresh() {
+	@Override
+	public void onRefresh() {
 		indicator.setMessage(getResources().getString(R.string.indicator_message));
-		if(Utils.hasInternet(getActivity())) {
+		if (Utils.hasInternet(mActivity)) {
 			indicator.show();
 			rs.setRefreshed(false);
 			onConnected(null);
@@ -136,14 +146,13 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		} else {
 			swipeLayout.setRefreshing(false);
 			indicator.dismiss();
-			Toast.makeText(getActivity(), R.string.internet_dialog_title, Toast.LENGTH_SHORT).show();
+			Toast.makeText(mActivity, R.string.internet_dialog_title, Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		mLocationClient.connect();
 
 		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(this);
@@ -153,8 +162,10 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		listView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 			@Override
 			public void onScrollChanged() {
-				if(listView.getChildAt(0).getTop() == 0) swipeLayout.setEnabled(true);
-				else swipeLayout.setEnabled(false);
+				if (listView.getChildAt(0) != null) {
+					if (listView.getChildAt(0).getTop() == 0) swipeLayout.setEnabled(true);
+					else swipeLayout.setEnabled(false);
+				}
 			}
 		});
 	}
@@ -168,11 +179,11 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	@Override
 	public void onConnected(Bundle bundle) {
 		// Get the users settings
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mActivity);
 		try {
 			distance = Integer.parseInt(settings.getString(getResources().getString(R.string.key_distance), "3000"));
 			limit = Integer.parseInt(settings.getString(getResources().getString(R.string.key_limit), "25"));
-		} catch (NumberFormatException nfe){
+		} catch (NumberFormatException nfe) {
 			Log.d(TAG, "Could not convert Settings' strings to integers, setting default values for 'Near me'");
 			distance = 3000;
 			limit = 25;
@@ -183,7 +194,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		mLocationClient.requestLocationUpdates(mLocationRequest, this);
 
 		// Provide a fixed location for the emulator
-		if(Utils.isAndroidEmulator()){
+		if (Utils.isAndroidEmulator()) {
 			Log.i(TAG, "Detected emulator, simulating location...");
 
 			Location mockLocation = new Location("Pilestredet 35 Mock Location Provider");
@@ -207,12 +218,12 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		if (connectionResult.hasResolution()) {
 			try {
-				connectionResult.startResolutionForResult(getActivity(), -1);
+				connectionResult.startResolutionForResult(mActivity, -1);
 			} catch (IntentSender.SendIntentException e) {
 				Log.d(TAG, "GPS connection failed", e);
 			}
 		} else {
-			Dialog d = GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), getActivity(), -2);
+			Dialog d = GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), mActivity, -2);
 			d.show();
 		}
 	}
@@ -221,24 +232,28 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	public void onLocationChanged(Location location) {
 		Log.d(TAG, "Got high accurancy location!");
 
-		// Enable automatic refresh if location has changed by >50 meters
-		if(mCurrentLocation.distanceTo(location) > 50) rs.setRefreshed(false);
+		if (mCurrentLocation != null && mLocationClient != null) {
+			// Enable automatic refresh if location has changed by >50 meters
+			if (mCurrentLocation.distanceTo(location) > 50) rs.setRefreshed(false);
 
-		mCurrentLocation = location;
-		mLocationClient.removeLocationUpdates(this);
+			mCurrentLocation = location;
 
-		geocoder = new Geocoder(getActivity(), Locale.getDefault());
-		try {
-			List<Address> addresses = geocoder.getFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), 1);
-			address = addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1);
-		} catch (IOException e) {
-			address = getResources().getString(R.string.no_address_found);
-		}
+			if (mLocationClient.isConnected() && !mLocationClient.isConnecting())
+				mLocationClient.removeLocationUpdates(this);
 
-		// Refresh one time, then disable until the user moves >50 meters or uses pull to refresh
-		if(!rs.isRefreshed()) {
-			showChargersNearLocation();
-			rs.setRefreshed(true);
+			geocoder = new Geocoder(mActivity, Locale.getDefault());
+			try {
+				List<Address> addresses = geocoder.getFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), 1);
+				address = addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1);
+			} catch (Exception e) {
+				address = getResources().getString(R.string.no_address_found);
+			}
+
+			// Refresh one time, then disable until the user moves >50 meters or uses pull to refresh
+			if (!rs.isRefreshed()) {
+				showChargersNearLocation();
+				rs.setRefreshed(true);
+			}
 		}
 	}
 
@@ -248,7 +263,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	 * @since 1.0.0
 	 */
 	private void showChargersNearLocation() {
-		if(!indicator.isShowing()) indicator.show();
+		if (!indicator.isShowing()) indicator.show();
 
 		String latitude = String.valueOf(mCurrentLocation.getLatitude());
 		String longitude = String.valueOf(mCurrentLocation.getLongitude());
@@ -256,7 +271,7 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		final TextView locationText = (TextView) header.findViewById(R.id.tv_location);
 		final TextView updatedText = (TextView) header.findViewById(R.id.tv_updated);
 
-		final DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext());
+		final DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mActivity.getApplicationContext());
 		final DateFormat timeFormat = DateFormat.getTimeInstance();
 
 		NobilService api = NobilClient.getInstance().getApi();
@@ -264,31 +279,32 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 		api.getChargersNearLocation(latitude, longitude, distance, limit, new Callback<ArrayList<Charger>>() {
 			@Override
 			public void success(ArrayList<Charger> chargers, Response response) {
-                ChargerListAdapter adapter = new ChargerListAdapter(getActivity(), chargers);
+				ChargerListAdapter adapter = new ChargerListAdapter(mActivity, chargers);
 
-                listView.setAdapter(adapter);
+				listView.setAdapter(adapter);
 
-				// Fixes scrolling bug (header view)
-				if(listView.getHeaderViewsCount() == 1) listView.removeHeaderView(header);
+				if (isAdded()) {
+					// Fixes scrolling bug (header view)
+					if (listView.getHeaderViewsCount() == 1) listView.removeHeaderView(header);
 
-				long time = System.currentTimeMillis();
+					long time = System.currentTimeMillis();
 
-				locationText.setText(address);
+					locationText.setText(address);
 
-				updatedText.setText(String.format(
-						getResources().getString(R.string.last_updated),
-						chargers.size(),
-						(dateFormat.format(time) + " " + timeFormat.format(time)
-				)));
+					updatedText.setText(String.format(
+							getResources().getString(R.string.last_updated),
+							chargers.size(),
+							(dateFormat.format(time) + " " + timeFormat.format(time)
+							)));
 
 
+					listView.addHeaderView(header);
 
-				listView.addHeaderView(header);
+					listView.setVisibility(View.VISIBLE);
+					noResults.setVisibility(View.GONE);
+				}
 
-				listView.setVisibility(View.VISIBLE);
-				noResults.setVisibility(View.GONE);
-
-                indicator.dismiss();
+				indicator.dismiss();
 			}
 
 			@Override
@@ -305,7 +321,13 @@ public class NearMeFragment extends Fragment implements GooglePlayServicesClient
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
 		prefs.unregisterOnSharedPreferenceChangeListener(settingsChangedListener);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		mLocationClient.connect();
 	}
 }
