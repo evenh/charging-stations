@@ -1,0 +1,8 @@
+net.evenh.chargingstations
+net.evenh.chargingstations.api
+net.evenh.chargingstations.models.charger
+net.evenh.chargingstations.models.stats
+net.evenh.chargingstations.serializers
+net.evenh.chargingstations.util
+net.evenh.chargingstations.views.adapters
+net.evenh.chargingstations.views.fragments
