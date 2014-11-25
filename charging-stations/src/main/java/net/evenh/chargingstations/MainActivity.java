@@ -35,6 +35,8 @@ public class MainActivity extends FragmentActivity {
 
 	private Dialog dialog;
 
+	private boolean hasClicked = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,7 +59,11 @@ public class MainActivity extends FragmentActivity {
 				.setPositiveButton(R.string.internet_dialog_ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+						if(!hasClicked) {
+							hasClicked = true;
+							startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+							hasClicked = false;
+						}
 					}
 				})
 				.create();
